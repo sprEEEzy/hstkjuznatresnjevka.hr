@@ -359,8 +359,9 @@ async function loadVideos() {
       };
     });
 
-    setCache(videos);
-    renderVideos(videos);
+    const latest = videos.slice(0, 6);
+    setCache(latest);
+    renderVideos(latest);
   } catch(e) {
     renderError('Nije moguće učitati videe. Pokušajte osvježiti stranicu.');
     console.error(e);
