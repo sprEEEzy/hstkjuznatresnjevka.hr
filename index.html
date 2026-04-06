@@ -72,7 +72,8 @@
   .section-title .accent { color: var(--red); }
 
   /* VIDEO GRID */
-  .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  @media (min-width: 600px) { .video-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; } }
   .video-card {
     background: #fff; border: 1px solid #ddd; border-radius: var(--radius);
     overflow: hidden; text-decoration: none; color: inherit;
@@ -143,9 +144,9 @@
 
 <header>
   <div class="header-inner">
-    <div class="club-badge">HSTK</div>
+    <img src="/images/jt-logo.png" alt="HSTK Južna Trešnjevka" class="club-logo">
     <div class="header-text">
-      <h1>HSTK <span>Južna</span><br>Trešnjevka</h1>
+      <h1>HSTK Južna<br>Trešnjevka</h1>
       <p>Hrvatski Stolnoteniski Klub &mdash; Zagreb, Hrvatska</p>
     </div>
   </div>
@@ -170,7 +171,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
           YouTube
         </a>
-        <a href="mailto:hstkjuznatresnjevka@gmail.com">
+        <a href="/cdn-cgi/l/email-protection#b0d8c3c4dbdac5caded1c4c2d5c3dedad5c6dbd1f0d7ddd1d9dc9ed3dfdd">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
           Kontakt
         </a>
@@ -188,7 +189,7 @@
   &copy; <span id="yr"></span> HSTK Južna Trešnjevka &mdash; Zagreb
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ─────────────────────────────────────────────
    CONFIG
    Replace with your actual channel ID.
@@ -324,12 +325,4 @@ function renderMockData() {
       </div>
       <div class="video-info">
         <h3>${v.title}</h3>
-        <div class="video-meta">Prije ${v.ago} &mdash; <em style="color:#bbb">demo prikaz</em></div>
-      </div>
-    </div>`).join('');
-}
-
-loadVideos();
-</script>
-</body>
-</html>
+        <div class="
