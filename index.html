@@ -276,7 +276,7 @@ async function loadVideos() {
     const rssUrl = encodeURIComponent(
       `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`
     );
-    const res  = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}&count=12`);
+    const res  = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
     const data = await res.json();
     if (data.status !== 'ok') throw new Error(data.message || 'RSS error');
 
