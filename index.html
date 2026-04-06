@@ -392,4 +392,66 @@ function renderMockData() {
       </div>
       <div class="video-info">
         <h3>${v.title}</h3>
-        <div class="
+        <div class="video-meta">Prije ${v.ago} &mdash; <em style="color:#bbb">demo prikaz</em></div>
+      </div>
+    </div>`).join('');
+}
+
+/* ─────────────────────────────────────────────
+   GALLERY
+   Update GALLERY_IMAGES with your actual filenames.
+   ───────────────────────────────────────────── */
+const GALLERY_IMAGES = [
+  'images/dvorana/1.jpg',
+  'images/dvorana/2.jpg',
+  'images/dvorana/3.jpg',
+  'images/dvorana/4.jpg',
+  'images/dvorana/5.jpg',
+  'images/dvorana/6.jpg',
+];
+
+let lbIndex = 0;
+
+function openLightbox(i) {
+  lbIndex = i;
+  document.getElementById('lb-img').src = GALLERY_IMAGES[i];
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function lbMove(dir) {
+  lbIndex = (lbIndex + dir + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+  document.getElementById('lb-img').src = GALLERY_IMAGES[lbIndex];
+}
+
+function initGallery() {
+  const grid = document.getElementById('gallery-grid');
+  grid.innerHTML = GALLERY_IMAGES.map((src, i) => `
+    <div class="gallery-thumb" onclick="openLightbox(${i})">
+      <img src="${src}" alt="Dvorana TOZ ${i+1}" loading="lazy">
+    </div>`).join('');
+
+  document.getElementById('lb-close').onclick = closeLightbox;
+  document.getElementById('lb-prev').onclick  = () => lbMove(-1);
+  document.getElementById('lb-next').onclick  = () => lbMove(1);
+  document.getElementById('lightbox').onclick = function(e) {
+    if (e.target === this) closeLightbox();
+  };
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  lbMove(-1);
+    if (e.key === 'ArrowRight') lbMove(1);
+  });
+}
+
+initGallery();
+loadVideos();
+</script>
+</body>
+</html>
