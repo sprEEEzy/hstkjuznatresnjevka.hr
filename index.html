@@ -47,12 +47,7 @@
     background: linear-gradient(90deg, var(--red) 50%, var(--blue) 50%);
   }
   .header-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 1.5rem; }
-  .club-badge {
-    width: 72px; height: 72px; border-radius: 50%; background: var(--red);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: #fff;
-    flex-shrink: 0; border: 3px solid var(--white); letter-spacing: 0.03em;
-  }
+  .club-logo { width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0; object-fit: cover; }
   .header-text h1 {
     font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem, 5vw, 2.8rem);
     color: var(--white); letter-spacing: 0.05em; line-height: 1.1;
@@ -105,6 +100,58 @@
   .sk-line { height: 12px; margin: 10px 12px 6px; border-radius: 3px; background: #d4cfc8; }
   .sk-line.short { width: 55%; }
 
+
+  /* GALLERY */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (max-width: 540px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+  .gallery-thumb {
+    position: relative; padding-bottom: 56.25%; overflow: hidden;
+    border-radius: var(--radius); cursor: pointer; background: var(--off);
+  }
+  .gallery-thumb img {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover; transition: transform 0.2s;
+  }
+  .gallery-thumb:hover img { transform: scale(1.04); }
+  .gallery-thumb::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(0,0,0,0); transition: background 0.2s;
+  }
+  .gallery-thumb:hover::after { background: rgba(0,0,0,0.15); }
+
+  /* LIGHTBOX */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.92);
+    align-items: center; justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 94vw; max-height: 90vh;
+    object-fit: contain; border-radius: 4px;
+  }
+  .lightbox-close {
+    position: fixed; top: 1rem; right: 1.25rem;
+    font-size: 2rem; color: #fff; cursor: pointer;
+    background: none; border: none; line-height: 1;
+    opacity: 0.7; transition: opacity 0.15s;
+  }
+  .lightbox-close:hover { opacity: 1; }
+  .lightbox-prev, .lightbox-next {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    font-size: 2rem; color: #fff; cursor: pointer;
+    background: none; border: none; padding: 0 1rem;
+    opacity: 0.6; transition: opacity 0.15s;
+  }
+  .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
+  .lightbox-prev { left: 0.5rem; }
+  .lightbox-next { right: 0.5rem; }
+
   /* ABOUT */
   .about-box {
     background: var(--blue-dk); color: var(--white); border-radius: var(--radius);
@@ -136,7 +183,8 @@
 <nav>
   <a class="nav-brand" href="#"><span>HSTK</span> Južna Trešnjevka</a>
   <ul>
-    <li><a href="#videos">Videi</a></li>
+    <li><a href="#videos">Snimke</a></li>
+    <li><a href="#dvorana">Dvorana</a></li>
     <li><a href="#about">O klubu</a></li>
     <li><a href="https://www.youtube.com/@HSTKJu%C5%BEnaTre%C5%A1njevka" target="_blank">YouTube</a></li>
   </ul>
@@ -146,7 +194,7 @@
   <div class="header-inner">
     <img src="images/jt-logo.png" alt="HSTK Južna Trešnjevka" class="club-logo">
     <div class="header-text">
-      <h1>HSTK Južna<br>Trešnjevka</h1>
+      <h1><span>HSTK</span> Južna<br>Trešnjevka</h1>
       <p>Hrvatski Stolnoteniski Klub &mdash; Zagreb, Hrvatska</p>
     </div>
   </div>
@@ -154,13 +202,29 @@
 
 <main>
   <section id="videos">
-    <h2 class="section-title">Najnoviji <span class="accent">videi</span></h2>
+    <h2 class="section-title">Najnovije <span class="accent">snimke</span></h2>
     <div class="video-grid" id="video-grid">
       <div class="skeleton"><div class="sk-thumb"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
       <div class="skeleton"><div class="sk-thumb"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
       <div class="skeleton"><div class="sk-thumb"></div><div class="sk-line"></div><div class="sk-line short"></div></div>
     </div>
   </section>
+
+
+  <section id="dvorana" style="margin-top:2.5rem">
+    <h2 class="section-title">Dvorana <span class="accent">TOZ</span></h2>
+    <div class="gallery-grid" id="gallery-grid">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" id="lb-close" aria-label="Zatvori">&times;</button>
+    <button class="lightbox-prev" id="lb-prev" aria-label="Prethodna">&#8249;</button>
+    <img id="lb-img" src="" alt="">
+    <button class="lightbox-next" id="lb-next" aria-label="Sljedeća">&#8250;</button>
+  </div>
 
   <div class="about-box" id="about">
     <div style="flex:1;min-width:200px">
@@ -178,15 +242,17 @@
       </div>
     </div>
     <div style="flex:1;min-width:180px;font-size:0.82rem;color:#9badd4;line-height:2">
-      <div><strong style="color:#fff">Adresa:</strong> Poljačka ulica 56, Zagreb</div>
-      <div><strong style="color:#fff">Tel:</strong> 098 277 049</div>
+      <div><strong style="color:#fff">Adresa:</strong> Poljačka 56 (TOZ), 10000 Zagreb</div>
+      <div><strong style="color:#fff">Tel:</strong> 098 912 5478</div>
+      <div><strong style="color:#fff">OIB:</strong> 99486580688</div>
+      <div><strong style="color:#fff">IBAN:</strong> HR45 2484 0081 1076 4971 7 (RBA)</div>
       <div><strong style="color:#fff">Osnovan:</strong> 2002.</div>
     </div>
   </div>
 </main>
 
 <footer>
-  &copy; <span id="yr"></span> HSTK Južna Trešnjevka &mdash; Zagreb
+  &copy; <span id="yr"></span> HSTK Južna Trešnjevka &mdash; Poljačka 56 (TOZ), 10000 Zagreb &mdash; OIB: 99486580688
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -277,16 +343,18 @@ async function loadVideos() {
     const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
     const res  = await fetch(`https://corsproxy.io/?${encodeURIComponent(rssUrl)}`);
     const text = await res.text();
-    const xml  = new DOMParser().parseFromString(text, 'text/xml');
-    const entries = [...xml.querySelectorAll('entry')];
+    const parser = new DOMParser();
+    const xml  = parser.parseFromString(text, 'application/xml');
+    const ns   = 'http://www.youtube.com/xml/schemas/2015';
+    const entries = [...xml.getElementsByTagName('entry')];
 
     const videos = entries.map(e => {
-      const vid = e.querySelector('videoId')?.textContent
-                || e.querySelector('id')?.textContent?.split(':').pop();
+      const vid = e.getElementsByTagNameNS(ns, 'videoId')[0]?.textContent
+                || e.getElementsByTagName('yt:videoId')[0]?.textContent;
       return {
-        title:     e.querySelector('title')?.textContent || '',
+        title:     e.getElementsByTagName('title')[0]?.textContent || '',
         url:       `https://www.youtube.com/watch?v=${vid}`,
-        published: e.querySelector('published')?.textContent || '',
+        published: e.getElementsByTagName('published')[0]?.textContent || '',
         thumb:     `https://i.ytimg.com/vi/${vid}/mqdefault.jpg`,
       };
     });
