@@ -341,16 +341,19 @@ async function loadVideos() {
 
   try {
     const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-    const res  = await fetch(`https://corsproxy.io/?${encodeURIComponent(rssUrl)}`);
-    const text = await res.text();
+    const res  = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`);
+    const json = await res.json();
+    const text = json.contents;
     const parser = new DOMParser();
     const xml  = parser.parseFromString(text, 'application/xml');
-    const ns   = 'http://www.youtube.com/xml/schemas/2015';
     const entries = [...xml.getElementsByTagName('entry')];
 
     const videos = entries.map(e => {
-      const vid = e.getElementsByTagNameNS(ns, 'videoId')[0]?.textContent
-                || e.getElementsByTagName('yt:videoId')[0]?.textContent;
+      const vidEl = e.querySelector('videoId')
+                 || e.getElementsByTagName('yt:videoId')[0]
+                 || e.getElementsByTagName('videoId')[0];
+      const vid = vidEl?.textContent
+               || e.querySelector('link[href*="watch"]')?.getAttribute('href')?.match(/v=([^&]+)/)?.[1];
       return {
         title:     e.getElementsByTagName('title')[0]?.textContent || '',
         url:       `https://www.youtube.com/watch?v=${vid}`,
